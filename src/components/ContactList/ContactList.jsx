@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 
 import selectors from "../../redux/contacts/contacts-selectors";
-import * as actions from "../../redux/contacts/contacts-actions";
+import { deleteContact } from "../../redux/contacts/contacts-reducer";
 
 import {
   BtnDelete,
@@ -21,10 +21,7 @@ function ContactList() {
         <Contact key={id}>
           <ContactData>{name}</ContactData>
           <ContactData>{number}</ContactData>
-          <BtnDelete
-            type="button"
-            onClick={() => dispatch(actions.deleteContact(id))}
-          >
+          <BtnDelete type="button" onClick={() => dispatch(deleteContact(id))}>
             Delete
           </BtnDelete>
         </Contact>

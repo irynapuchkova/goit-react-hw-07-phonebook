@@ -2,7 +2,8 @@ import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 
 import selectors from "../../redux/contacts/contacts-selectors";
-import * as actions from "../../redux/contacts/contacts-actions";
+import { filter } from "../../redux/contacts/contacts-reducer";
+
 import { Title, Input, Wrapper } from "./Filter.styled";
 
 function Filter() {
@@ -10,7 +11,7 @@ function Filter() {
   const dispatch = useDispatch();
 
   const handleFilter = ({ currentTarget: { value } }) => {
-    dispatch(actions.filter(value));
+    dispatch(filter(value));
   };
 
   return (

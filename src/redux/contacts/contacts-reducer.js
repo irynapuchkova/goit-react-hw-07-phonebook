@@ -1,21 +1,26 @@
-import { combineReducers } from "redux";
-import { createReducer } from "@reduxjs/toolkit";
-import * as actions from "./contacts-actions";
+import { createSlice } from "@reduxjs/toolkit";
 
-const items = createReducer([], {
-  [actions.submitForm]: (state, { payload }) => {
-    return [...state, payload];
+const initialState = {
+  items: [],
+  filter: "",
+};
+
+const contactsSlice = createSlice({
+  name: "contacts",
+  initialState,
+  reducers: {
+    submitForm: ({ items, filter }, { payload }) => {
+      return { filter, items: [...items, payload] };
+    },
+    deleteContact({ items, filter }, { payload }) {
+      items = items.filter((item) => item.id !== payload);
+      return { filter, items };
+    },
+    filter({ items, filter }, { payload }) {
+      return { filter: payload, items };
+    },
   },
-  [actions.deleteContact]: (state, { payload }) => {
-    return state.filter((item) => item.id !== payload);
-  },
 });
 
-const filter = createReducer("", {
-  [actions.filter]: (_state, { payload }) => payload,
-});
-
-export default combineReducers({
-  items,
-  filter,
-});
+export default contactsSlice.reducer;
+export const { submitForm, deleteContact, filter } = contactsSlice.actions;
