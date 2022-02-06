@@ -1,19 +1,18 @@
-import PropTypes from "prop-types";
 import shortid from "shortid";
-
 import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-
-import selectors from "../../redux/contacts/contacts-selectors";
-import { submitForm } from "../../redux/contacts/contacts-reducer";
+import {
+  useAddContactMutation,
+  useGetContactsQuery,
+} from "../../redux/contacts/contacts-actions/fetchContacts";
 
 import { Form, Input, BtnSubmit } from "./ContactForm.styled";
 
 function ContactForm() {
   const [name, setName] = useState("");
   const [number, setNumber] = useState("");
-  const contacts = useSelector(selectors.contacts);
-  const dispatch = useDispatch();
+
+  const { data } = useGetContactsQuery();
+  const [addContact] = useAddContactMutation();
 
   const handleInputValue = ({ currentTarget: { name, value } }) => {
     name === "name" ? setName(value) : setNumber(value);
@@ -27,15 +26,15 @@ function ContactForm() {
   const onFormSubmit = (e) => {
     e.preventDefault();
 
-    const existedNames = contacts.map((contact) => contact.name);
-    let contact = { name, number };
+    const contactsData = data;
+    const contact = { id: shortid.generate(), name, number };
+    const existedNames = contactsData.map((contact) => contact.name);
 
     if (existedNames.includes(contact.name)) {
       return alert(`${contact.name} is already in contacts`);
     }
-    contact = { id: shortid.generate(), name, number };
 
-    dispatch(submitForm(contact));
+    addContact(contact);
     resetState();
   };
 
@@ -67,14 +66,3 @@ function ContactForm() {
 }
 
 export default ContactForm;
-
-ContactForm.propTypes = {
-  onSubmit: PropTypes.func,
-  contacts: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-    })
-  ),
-};
