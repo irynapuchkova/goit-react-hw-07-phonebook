@@ -29,9 +29,6 @@ export const contactsApi = createApi({
         body: { name: contact.name, phone: contact.number },
       }),
       invalidatesTags: ["CONTACT"],
-      // не перерендеруються контакти на сторінці, хоча на беку - так
-      //   (result, error, contact) => [
-      //   { type: "CONTACT", contact, error: error.message, data: result }],
     }),
     deleteContact: build.mutation({
       query: (contactId) => ({

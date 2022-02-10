@@ -1,10 +1,8 @@
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
-// //////////let it be for futher practce /////////
 // import logger from "redux-logger";
-// import { setupListeners } from "@reduxjs/toolkit/query";
 
 import { contactsApi } from "./contacts/contacts-actions/fetchContacts";
-import filterSlice from "./contacts/contacts-reducer";
+import filterSlice from "./contacts/contacts-reducers";
 
 const middleware = [...getDefaultMiddleware(), contactsApi.middleware];
 
@@ -18,5 +16,3 @@ const store = configureStore({
 });
 
 export default store;
-
-// setupListeners(store.dispatch);
